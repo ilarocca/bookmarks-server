@@ -1,11 +1,17 @@
 const bookmarks = [
   {
-    id: 1,
     url: "www.youtube.com",
+    title: "Youtube",
+    rating: 5,
+    description: "",
+    id: 1,
   },
   {
-    id: 2,
     url: "www.reddit.com",
+    title: "Reddit",
+    rating: 5,
+    description: "",
+    id: 2,
   },
 ];
 

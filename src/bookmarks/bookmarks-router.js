@@ -12,17 +12,32 @@ bookmarksRouter
     res.json(bookmarks);
   })
   .post(bodyParser, (req, res) => {
-    const { url } = req.body;
+    const { url, title, rating, description } = req.body;
 
     if (!url) {
-      logger.error(`Bookmark is required`);
-      return res.status(400).send("Invalid data");
+      logger.error(`Url is required`);
+      return res.status(400).send("Url is required");
+    }
+    if (!title) {
+      logger.error(`Title is required`);
+      return res.status(400).send("Title is required");
+    }
+    if (!rating || !Number.isInteger(rating) || rating < 0 || rating > 5) {
+      logger.error(`Rating is required`);
+      return res.status(400).send("Rating must be a number between 0 and 5");
+    }
+    if (!description) {
+      logger.error(`Description is required`);
+      return res.status(400).send("Description is required");
     }
 
     const id = uuid();
     const bookmark = {
-      id,
       url,
+      title,
+      rating,
+      description,
+      id,
     };
 
     bookmarks.push(bookmark);
