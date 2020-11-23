@@ -1,13 +1,11 @@
 const knex = require("knex");
 const fixtures = require("./bookmarks-fixtures");
 const app = require("../src/app");
-// TODO: remove when updating POST and DELETE
-const store = require("../src/store");
 const supertest = require("supertest");
 const { expect } = require("chai");
 
 describe("Bookmarks Endpoints", () => {
-  let bookmarksCopy, db;
+  let db;
 
   before("make knex instance", () => {
     db = knex({
@@ -44,14 +42,14 @@ describe("Bookmarks Endpoints", () => {
     });
 
     it(`responds with 401 Unauthorized for GET /bookmarks/:id`, () => {
-      const secondBookmark = store.bookmarks[1];
+      const secondBookmark = testBookmarks[1];
       return supertest(app)
         .get(`/bookmarks/${secondBookmark.id}`)
         .expect(401, { error: "Unauthorized request" });
     });
 
     it(`responds with 401 Unauthorized for DELETE /bookmarks/:id`, () => {
-      const aBookmark = store.bookmarks[1];
+      const aBookmark = testBookmarks[1];
       return supertest(app)
         .delete(`/bookmarks/${aBookmark.id}`)
         .expect(401, { error: "Unauthorized request" });
@@ -158,7 +156,6 @@ describe("Bookmarks Endpoints", () => {
     });
   });
 
-  // TODO: update to use db
   describe("DELETE /bookmarks/:id", () => {
     context(`Given no bookmarks`, () => {
       it(`responds 404 whe bookmark doesn't exist`, () => {
@@ -196,11 +193,9 @@ describe("Bookmarks Endpoints", () => {
     });
   });
 
-  // TODO: update to use db
   describe("POST /bookmarks", () => {
     it(`responds with 400 missing 'title' if not supplied`, () => {
       const newBookmarkMissingTitle = {
-        // title: 'test-title',
         url: "https://test.com",
         rating: 1,
       };
